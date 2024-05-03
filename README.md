@@ -91,7 +91,7 @@ names = ["Free Food", "Rails", "Ruby", "Things That Fly"]
 names.each { |name| Category.create(name: name) }
 ```
 
-# Deployment
+# Prep to Deploy
 
 When your project is ready for deployment:
 
@@ -116,3 +116,16 @@ bundle config set --local without 'production'
 bundle install
 bundle lock --add-platform x86-64-linux
 ```
+
+3. Storage Credentials
+`EDITOR=vi bin/rails credentials:edit`
+
+It will generate `credentials.yml.enc`
+
+After that, open `config/environments/production.rb` and edit `config.active_storage.service = :local` to `:amazon` or whatever your storage service is.
+
+# Deploy
+
+`heroku/yourService config:set RAILS_MASTER_KEY=...` copy it from master.key in `config`
+
+then add `gem aws-sdk-s3`. After that `bundle install` and `rails db:migrate` to make changes
